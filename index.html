@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script defer src="js/main.js"></script>
+</head>
+<body onmousedown="return false" onselectstart="return false">
+    <!-- Start screen -->
+    <div id="start-screen">
+        <img src="https://78.media.tumblr.com/105ac1a1cc31e1a054527ffa02e08bf1/tumblr_oz2iyb56V91u6t6uao1_540.png">
+        <a>PRESS TO START</a>
+    </div>
+
+    <main class="hidden">
+        <header>MINESWEEPER</header>
+        
+        <div id="game">
+            <div id="game-grid"></div>
+        </div>
+
+        <div id="details">
+            <div id="flags">🚩 <span>00</span></div>
+            <div id="timer">⌛ <span>000</span></div>
+            <div id="help">❓<span>Help</span></div>
+        </div>
+
+        <div id="buttons">
+            <button class="button" id = "button1">NEW GAME</button>
+            <button class="button" id="button2">DIFFICULTY</button>
+        </div>
+
+        <div id="game-over" class="popup">
+            <div class="popup-content">
+                <h2>Game Over</h2>
+                <p>You clicked on a mine!</p>
+                <button id="close-button" class="button">TRY AGAIN</button>
+            </div>
+        </div>
+
+        <div id="game-won" class="popup">
+            <div class="popup-content">
+                <h2>You Win</h2>
+                <p>You cleared all the mines!</p>
+                <p>Time: <span>000</span></p>
+                <button id="won-close-button" class="button">PLAY AGAIN</button>
+            </div>
+        </div>
+          
+        <div id="help-popup" class="popup">
+            <div class="popup-content">
+                <h2>How to Play</h2>
+                <p>Clear the board without detonating any mines!
+                A numbered tile denotes the number of mines surrounding it.
+                </br></br>Controls: Left-click to open a tile. Right-click to flag a tile.
+                </p>
+                <button id="help-close-button" class="button">CLOSE</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>Made by <a href="https://github.com/the0choi">@the0choi</a><footer>
+</body>
+</html>
