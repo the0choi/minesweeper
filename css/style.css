@@ -75,8 +75,8 @@ body {
 }
 
 #game-grid {
-    height: 90%;
-    width: 90%;
+    height: 95%;
+    width: 95%;
     display: block;
     max-width: 100%; 
     margin: auto;
@@ -85,7 +85,8 @@ body {
 .cell {
     height: 100%;
     width: 100%;
-    background-color: #23a6d5;
+    /* background-color: #23a6d5; */
+    background-color: rgba(255, 255, 255, 0);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
     text-align: center;
@@ -97,8 +98,9 @@ body {
 }
 
 .cell:hover {
-    /* background-color: rgb(104, 83, 221) */
     opacity: 0.8;
+    background-color: rgba(255, 255, 255, 0.4);
+
 }
 
 header {
@@ -107,7 +109,8 @@ header {
     font-size: 5vmin;
     color: black;
     text-align: center;
-    margin: 1vmin;
+    margin-top: -10vmin;
+    margin-bottom: 1vmin;
     color: white;
 }
 
@@ -165,11 +168,10 @@ header {
 
 .popup {
     position: fixed;
-    top: 50%;
+    top: 42%;
     left: 50%;
     transform: translate(-50%, -50%);
     visibility: hidden;
-    /* transition-delay: opacity 1s ease-in; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -186,12 +188,31 @@ header {
     border-radius: 5px;
 }
 
+#time-record {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    color: black;
+}
+
+#time-record > span {
+    font-size: 3vmin;
+    margin: 0 0 0 5px;
+}
+
+#time-record > img {
+    display: center;
+    height: 4vmin;
+    width: auto;
+    text-align: center;
+}
+
 .popup h2 {
     margin-top: 0;
 }
 
 .popup p {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #help-popup {
@@ -205,7 +226,7 @@ footer {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-size: 1.3vmin;
+    font-size: 12px;
     background-color: rgba(0, 0, 0, 0.03);
     padding: 2px;
 }
