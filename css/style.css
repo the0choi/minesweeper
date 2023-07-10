@@ -5,14 +5,14 @@ html {
 
 body {
     height: 100vh;
-    background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-	/* background: linear-gradient(-45deg, #ad80a0, #c8a4d4, #89c5f2, #b2e1ff); */
+    /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
+    background: linear-gradient(-45deg, #b72df7, #8c2afc, #23a6d5, #23d5ab);
     background-size: 400%;
 	animation: gradient 30s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: sans-serif;
+    font-family: 'Open Sans', sans-serif;
     margin: 0;
 }
 
@@ -36,7 +36,6 @@ body {
 }
 
 #start-screen a {
-    font-family: 'Open Sans', sans-serif;
     font-size: 2em;
     color: rgb(64,67,68);
     font-weight: bold;
@@ -64,8 +63,8 @@ body {
 }
 
 #game {
-    height: 55vmin;
-    width: 60vmin;
+    height: 65vmin;
+    width: 70vmin;
     background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     align-content: center;
@@ -77,7 +76,9 @@ body {
 #game-grid {
     height: 95%;
     width: 95%;
-    display: block;
+    display: grid;
+    justify-items: center;
+    align-items: center;
     max-width: 100%; 
     margin: auto;
 }
@@ -85,7 +86,6 @@ body {
 .cell {
     height: 100%;
     width: 100%;
-    /* background-color: #23a6d5; */
     background-color: rgba(255, 255, 255, 0);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
@@ -103,8 +103,25 @@ body {
 
 }
 
-header {
+div[data-opened="blank"]:not(#game-grid) {
+    background-color: rgba(182, 213, 253, 0.5);
+}
+
+div[data-opened="opened-mine"] {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+div[data-opened="mine"] {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+div[data-opened="number"] {
+    background-color: rgba(75, 198, 255, 0.5);
     font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+}
+
+header {
     letter-spacing: 3px;
     font-size: 5vmin;
     color: black;
@@ -139,7 +156,7 @@ header {
     font-family: 'Open Sans', sans-serif;
     font-size: 15px;
     letter-spacing: 1px;
-    padding: 13px 10px;
+    padding: 1.6vmin 1vmin;
     transform: translateZ(0);
     transition: filter .2s;
     width: 30vmin;
@@ -175,6 +192,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.5vmin;
 }
 
 .popup.fade-in {
@@ -227,7 +245,6 @@ footer {
     transform: translate(-50%, -50%);
     color: white;
     font-size: 12px;
-    background-color: rgba(0, 0, 0, 0.03);
     padding: 2px;
 }
 

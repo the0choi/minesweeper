@@ -111,12 +111,10 @@ function init() {
 function render() {
 
     // Displays grid of game
-    gridContainer.style.display = 'grid';
     gridContainer.style.gridTemplateRows = `repeat(${GAME_MODE[difficulty].rows}, 1fr`;
     gridContainer.style.gridTemplateColumns = `repeat(${GAME_MODE[difficulty].cols}, 1fr`;
-    gridContainer.style.alignItems= 'center';
-    gridContainer.style.justifyItems= 'center';
     
+
 }
 
 // Adds mines randomly to the grid
@@ -173,15 +171,16 @@ function openCell(e) {
     if (datasetValue === 'mine') {
         gridContainer.childNodes.forEach( function(cell) {
             if (cell.dataset.type === 'mine') {
-                cell.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                cell.dataset.opened = 'mine'
                 cell.innerText = '◉';
             }
-
-        e.target.style.backgroundColor = 'red';
-        gameOver();
         })
+
+        e.target.dataset.opened = 'opened-mine'
+        gameOver();
+        return;
     } else if (CELL_NUMS.includes(parseInt(datasetValue))) {
-        e.target.style.backgroundColor = 'grey';
+        e.target.dataset.opened = 'number'
         e.target.innerText = datasetValue;
         e.target.dataset.status = 'opened';
     } else if (!datasetValue) {
@@ -211,7 +210,7 @@ function flagCell(e) {
 function flood(cell) {
 
     cell.dataset.status = 'opened';
-    cell.style.backgroundColor = 'lightblue';
+    cell.dataset.opened = 'blank'
 
 
     let row = parseInt(cell.dataset.row);
@@ -229,7 +228,8 @@ function flood(cell) {
 
         if (neighborCell && !neighborCell.dataset.type && neighborCell.dataset.status === 'closed') {
             neighborCell.dataset.status = 'opened';
-            neighborCell.style.backgroundColor = 'lightblue';
+            neighborCell.dataset.opened = 'blank'
+
             flood(neighborCell);
         }
     }
@@ -250,7 +250,8 @@ function flood(cell) {
 
                 neighborNumCell.innerText = neighborNumCell.dataset.type;
                 neighborNumCell.dataset.status = 'opened';
-                neighborNumCell.style.backgroundColor = 'grey';
+                neighborNumCell.dataset.opened = 'number'
+
             }
         }
     } 

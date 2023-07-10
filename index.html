@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minesweeper - the0choi</title>
+    <title>Sea Sweep!</title>
     <link rel="icon" href="images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,14 +12,13 @@
     <script defer src="js/main.js"></script>
 </head>
 <body onmousedown="return false" onselectstart="return false" draggable="false">
-    <!-- Start screen -->
     <div id="start-screen">
         <img src="https://78.media.tumblr.com/105ac1a1cc31e1a054527ffa02e08bf1/tumblr_oz2iyb56V91u6t6uao1_540.png">
         <a>PRESS TO START</a>
     </div>
 
     <main class="hidden">
-        <header>MINESWEEPER</header>
+        <header>SEA SWEEP</header>
         
         <div id="game">
             <div id="game-grid"></div>
@@ -56,7 +55,8 @@
         <div id="help-popup" class="popup">
             <div class="popup-content">
                 <h2>How to Play</h2>
-                <p>Clear the board without detonating any mines!
+                <p>Explore the ocean and neutralize the underwater threats!
+                    The objective is to clear all the mines on the board.
                 A numbered tile denotes the number of mines surrounding it.
                 </br></br>Controls: Left-click or tap to open a tile. Right-click or long-press to flag a tile.
                 </p>
