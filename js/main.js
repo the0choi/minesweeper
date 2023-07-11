@@ -114,7 +114,6 @@ function render() {
     gridContainer.style.gridTemplateRows = `repeat(${GAME_MODE[difficulty].rows}, 1fr`;
     gridContainer.style.gridTemplateColumns = `repeat(${GAME_MODE[difficulty].cols}, 1fr`;
     
-
 }
 
 // Adds mines randomly to the grid
@@ -176,11 +175,11 @@ function openCell(e) {
             }
         })
 
-        e.target.dataset.opened = 'opened-mine'
+        e.target.dataset.opened = 'opened-mine';
         gameOver();
         return;
     } else if (CELL_NUMS.includes(parseInt(datasetValue))) {
-        e.target.dataset.opened = 'number'
+        e.target.dataset.opened = 'number';
         e.target.innerText = datasetValue;
         e.target.dataset.status = 'opened';
     } else if (!datasetValue) {

@@ -16,6 +16,10 @@ body {
     margin: 0;
 }
 
+.hidden {
+    display: none;
+}
+
 @keyframes gradient {
     0% {background-position: 0% 50%}
     50% {background-position: 100% 50%}
@@ -49,17 +53,18 @@ body {
     box-shadow: inset 300px 0 0 0 #313131;
 }
 
-#help:hover {
-    cursor: pointer;
-}
-
 .fade-out {
     opacity: 0;
     transition: opacity 0.5s ease-out;
 }
 
-.hidden {
-    display: none;
+header {
+    letter-spacing: 1px;
+    font-size: 3vmin;
+    text-align: center;
+    margin-top: -10vmin;
+    margin-bottom: 1vmin;
+    color: white;
 }
 
 #game {
@@ -121,24 +126,19 @@ div[data-opened="number"] {
     font-weight: bold;
 }
 
-header {
-    letter-spacing: 3px;
-    font-size: 5vmin;
-    color: black;
-    text-align: center;
-    margin-top: -10vmin;
-    margin-bottom: 1vmin;
-    color: white;
-}
-
 #details {
     display: flex;
     justify-content: space-around;
     color: white;
+    letter-spacing: 1px;
     padding: 1vmin;
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.1);
     margin: 0.8vmin;
+}
+
+#help:hover {
+    cursor: pointer;
 }
 
 #buttons {
@@ -235,7 +235,6 @@ header {
 
 #help-popup {
     width: 40vmin;
-
 }
   
 footer {
@@ -252,4 +251,33 @@ a {
     color: white;
     text-decoration: none;
     font-weight: bold;
+}
+
+.animation-wrapper :nth-child(1) {
+    height: 40vmin;
+	animation: float 6s ease-in-out infinite;
+	position: absolute;
+    bottom: 10%;
+    left: 75%;
+}
+
+.animation-wrapper :nth-child(2) {
+    height: 35vmin;
+    rotate: -20deg;
+	animation: float 9s ease-in-out infinite;
+	position: absolute;
+    top: 10%;
+    right: 80%;
+}
+
+@keyframes float {
+    0% {
+    transform: translate(0,0) rotate(-10deg);
+    }
+    50% {
+    transform: translate(20px,20px) rotate(0deg);
+    }
+    100% {
+    transform: translate(0,0) rotate(-10deg);
+    }
 }
