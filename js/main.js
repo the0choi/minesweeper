@@ -208,15 +208,11 @@ function openCell(e) {
         e.target.dataset.status = 'opened';
 
         e.target.innerText = datasetValue;
-        let dynamicCellSize = e.target.getBoundingClientRect().height;
-        e.target.style.fontSize = `${dynamicCellSize * fontScale}px`;
-
+        checkWin();
     } else if (!datasetValue) {
-        flood(e.target);
+        flood(e.target, checkWin);
     }
     openSound.play();
-
-    setTimeout(checkWin(), 4000);
 }
 
 function flagCell(e) {
@@ -232,15 +228,13 @@ function flagCell(e) {
         && flagEl.innerText > 0) {
 
         e.target.innerText = '🚩'
-        let dynamicCellSize = e.target.getBoundingClientRect().height;
-        e.target.style.fontSize = `${dynamicCellSize * fontScale}px`;
         e.target.dataset.status = 'flagged';
         flagEl.innerText--;
     }  
 }
 
 // Recursively open all unmarked cells in the area of opened cell
-function flood(cell) {
+function flood(cell, cb) {
 
     cell.dataset.status = 'opened';
     cell.dataset.opened = 'blank';
@@ -257,38 +251,38 @@ function flood(cell) {
 
     setTimeout(() => {
 
-    for (const direction of directions) {
-        const neighborCell = gridContainer.querySelector(`[data-row="${direction.row}"][data-col="${direction.col}"]`);
+        for (let direction of directions) {
+            const neighborCell = gridContainer.querySelector(`[data-row="${direction.row}"][data-col="${direction.col}"]`);
 
-        if (neighborCell && !neighborCell.dataset.type && neighborCell.dataset.status === 'closed') {
-            flood(neighborCell);
-        }
-    }
-
-    // Open the numbered cells on the border of the opened flood cells
-    for (let i = row - 1; i <= row + 1; i++) {
-        for (let j = col - 1; j <= col + 1; j++) {
-            if (i === row && j === col) continue // Skip the target cell
-
-            const neighborNumCell = gridContainer.querySelector(`[data-row="${i}"][data-col="${j}"]`)
-
-            if (neighborNumCell && neighborNumCell.dataset.type !== 'mine' && neighborNumCell.dataset.status === 'closed') {
-
-                if (!neighborNumCell.dataset.type) {
-                    flood(neighborNumCell);
-                    continue;
-                }
-
-                neighborNumCell.innerText = neighborNumCell.dataset.type;
-                let dynamicCellSize = neighborNumCell.getBoundingClientRect().height;
-                neighborNumCell.style.fontSize = `${dynamicCellSize * fontScale}px`;
-                neighborNumCell.dataset.status = 'opened';
-                neighborNumCell.dataset.opened = 'number'
-
+            if (neighborCell && !neighborCell.dataset.type && neighborCell.dataset.status === 'closed') {
+                flood(neighborCell, checkWin);
             }
         }
-    } 
+
+        // Open the numbered cells on the border of the opened flood cells
+        for (let i = row - 1; i <= row + 1; i++) {
+            for (let j = col - 1; j <= col + 1; j++) {
+                if (i === row && j === col) continue // Skip the target cell
+
+                const neighborNumCell = gridContainer.querySelector(`[data-row="${i}"][data-col="${j}"]`)
+
+                if (neighborNumCell && neighborNumCell.dataset.type !== 'mine' && neighborNumCell.dataset.status === 'closed') {
+
+                    if (!neighborNumCell.dataset.type) {
+                        flood(neighborNumCell, checkWin);
+                        continue;
+                    }
+
+                    neighborNumCell.innerText = neighborNumCell.dataset.type;
+                    neighborNumCell.dataset.status = 'opened';
+                    neighborNumCell.dataset.opened = 'number'
+
+                }
+            }
+        } 
+        cb();
     }, 30);
+
 }
 
 function startTimer() {
