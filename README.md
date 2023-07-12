@@ -25,6 +25,7 @@ The timer will start to tick as soon as the first tile is opened. Players can ch
 * HTML
 * CSS
 * JavaScript
+* Photoshop
 
 # Next Steps
 Planned future features and quality of life enhancements
