@@ -17,9 +17,17 @@
         <a>PRESS TO START</a>
     </div>
 
+    <div class="animation-wrapper">
+        <img src="images/naval_mine.png">
+        <img src="images/naval_mine.png">
+    </div>
+
     <main class="hidden">
-        <header>Clear all the mines!</header>
-        
+        <div id="top">
+            <header>Sea Sweep</header>
+            <img id="muteToggle" src="images/volume_on.png">
+        </div>
+
         <div id="game">
             <div id="game-grid"></div>
         </div>
@@ -64,12 +72,12 @@
             </div>
         </div>
 
-    </main>
+        <audio id="openSound" src="audio/openclick.mp3"></audio>
+        <audio id="flagSound" src="audio/flagclick.mp3"></audio>
+        <audio id="gameWinSound" src="audio/gamewin.mp3"></audio>
+        <audio id="mineSound" src="audio/mine.mp3"></audio>
 
-    <div class="animation-wrapper">
-        <img src="images/naval-mine.png">
-        <img src="images/naval-mine.png">
-    </div>
+    </main>
 
     <footer>Made by <a href="https://github.com/the0choi" target="_blank">@the0choi</a><footer>
 </body>

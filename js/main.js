@@ -1,6 +1,6 @@
 /*----- constants -----*/
 const GAME_MODE = {
-    easy: {rows: 9, cols: 9, mines: 10},
+    easy: {rows: 9, cols: 9, mines: 3},
     medium: {rows: 16, cols: 16, mines: 40},
     hard: {rows: 22, cols: 22, mines: 99},
 };
@@ -11,6 +11,8 @@ let timer; // count seconds from 000
 let timerInterval; // will store the setInterval timer instance
 let difficulty; // 'easy', 'medium', 'hard'
 let flags; // remaining flags that can be placed
+let isMuted = false; // Turn sound on / off
+let fontScale = 0.4; // Font scale to dynamically fit inside cell
 
 /*----- cached elements  -----*/
 const start = document.querySelector('#start-screen');
@@ -26,6 +28,12 @@ const gameWonEl = document.getElementById('game-won');
 const closeButtonEl = document.getElementById('close-button');
 const closeWonButtonEl = document.getElementById('won-close-button');
 const helpCloseButtonEl = document.getElementById('help-close-button');
+const audioEls = document.querySelectorAll('audio');
+const muteEl = document.getElementById('muteToggle');
+
+// Adjust mine sound volumne
+const mineSound = document.getElementById('mineSound')
+mineSound.volume = 0.3;
 
 /*----- event listeners -----*/
 
@@ -62,6 +70,15 @@ helpCloseButtonEl.addEventListener('click', helpClosePopUp);
 
 // Changes difficulty and grid
 difficultyEl.addEventListener('click', changeDifficulty);
+
+// Mute button
+muteEl.addEventListener('click', () => {
+    isMuted = !isMuted;
+    audioEls.forEach( (audioEl) => audioEl.muted = isMuted );
+
+    const imageSrc = isMuted ? 'images/volume_off.png' : 'images/volume_on.png';
+    muteToggle.src = imageSrc;
+});
 
 /*----- functions -----*/
 init();
@@ -101,7 +118,6 @@ function init() {
             gridContainer.appendChild(cell);
         }
     }
-
     addMinesToGrid();
     addNumsToGrid();
     render();
@@ -162,44 +178,62 @@ function checkSurroundingMines(cell) {
 }
 
 function openCell(e) {
+
     if (e.target.dataset.status === 'flagged' ||
     e.target.dataset.status === 'opened') return; // Disable for flag/opened cells
 
     let datasetValue = e.target.dataset.type;
 
     if (datasetValue === 'mine') {
-        gridContainer.childNodes.forEach( function(cell) {
+
+        mineSound.play();
+        
+        gridContainer.childNodes.forEach( function(cell) {            
             if (cell.dataset.type === 'mine') {
-                cell.dataset.opened = 'mine'
-                cell.innerText = '◉';
+                cell.dataset.opened = 'mine';
+                
+                cell.innerText = '';
+                let mineIcon = document.createElement('img');
+                mineIcon.src = "images/naval_mine_icon.png";
+                cell.appendChild(mineIcon);
             }
         })
 
         e.target.dataset.opened = 'opened-mine';
         gameOver();
         return;
+
     } else if (CELL_NUMS.includes(parseInt(datasetValue))) {
         e.target.dataset.opened = 'number';
-        e.target.innerText = datasetValue;
         e.target.dataset.status = 'opened';
+
+        e.target.innerText = datasetValue;
+        let dynamicCellSize = e.target.getBoundingClientRect().height;
+        e.target.style.fontSize = `${dynamicCellSize * fontScale}px`;
+
     } else if (!datasetValue) {
         flood(e.target);
     }
+    openSound.play();
 
-    checkWin();
-
+    setTimeout(checkWin(), 4000);
 }
 
 function flagCell(e) {
+
+    flagSound.play();
     e.preventDefault();
 
     if (e.target.dataset.status === 'flagged') {
-        e.target.innerText = '';
+        e.target.innerText = ''
         e.target.dataset.status = 'closed';
         flagEl.innerText++;
     } else if (e.target.dataset.status === 'closed' 
         && flagEl.innerText > 0) {
-        e.target.innerText = '🚩';
+
+        e.target.innerText = '🚩'
+        let dynamicCellSize = e.target.getBoundingClientRect().height;
+        e.target.style.fontSize = `${dynamicCellSize * fontScale}px`;
         e.target.dataset.status = 'flagged';
         flagEl.innerText--;
     }  
@@ -209,8 +243,7 @@ function flagCell(e) {
 function flood(cell) {
 
     cell.dataset.status = 'opened';
-    cell.dataset.opened = 'blank'
-
+    cell.dataset.opened = 'blank';
 
     let row = parseInt(cell.dataset.row);
     let col = parseInt(cell.dataset.col);
@@ -222,13 +255,12 @@ function flood(cell) {
         {row: row, col: col + 1}  // right
     ];
 
+    setTimeout(() => {
+
     for (const direction of directions) {
         const neighborCell = gridContainer.querySelector(`[data-row="${direction.row}"][data-col="${direction.col}"]`);
 
         if (neighborCell && !neighborCell.dataset.type && neighborCell.dataset.status === 'closed') {
-            neighborCell.dataset.status = 'opened';
-            neighborCell.dataset.opened = 'blank'
-
             flood(neighborCell);
         }
     }
@@ -248,12 +280,15 @@ function flood(cell) {
                 }
 
                 neighborNumCell.innerText = neighborNumCell.dataset.type;
+                let dynamicCellSize = neighborNumCell.getBoundingClientRect().height;
+                neighborNumCell.style.fontSize = `${dynamicCellSize * fontScale}px`;
                 neighborNumCell.dataset.status = 'opened';
                 neighborNumCell.dataset.opened = 'number'
 
             }
         }
     } 
+    }, 30);
 }
 
 function startTimer() {
@@ -291,6 +326,7 @@ function checkWin() {
         gameWonEl.classList.add('fade-in');
         clearInterval(timerInterval);
         gameWonEl.querySelector('span').innerText = timerEl.innerText;
+        gameWinSound.play();
 
         // Prevents cells from being clicked after game is finished
         gridContainer.childNodes.forEach( function(cell) {
