@@ -1,6 +1,6 @@
 /*----- constants -----*/
 const GAME_MODE = {
-    easy: {rows: 9, cols: 9, mines: 3},
+    easy: {rows: 9, cols: 9, mines: 10},
     medium: {rows: 16, cols: 16, mines: 40},
     hard: {rows: 22, cols: 22, mines: 99},
 };
