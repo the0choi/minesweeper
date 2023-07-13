@@ -11,8 +11,8 @@ let timer; // count seconds from 000
 let timerInterval; // will store the setInterval timer instance
 let difficulty; // 'easy', 'medium', 'hard'
 let flags; // remaining flags that can be placed
-let isMuted = false; // Turn sound on / off
-let fontScale = 0.4; // Font scale to dynamically fit inside cell
+let isMuted = false; // turn sound on / off
+let fontScale = 0.6; // font scale factor to dynamically fit inside cell
 
 /*----- cached elements  -----*/
 const start = document.querySelector('#start-screen');
@@ -58,17 +58,15 @@ gridContainer.addEventListener('click', function (e) {
 // Flags a cell
 gridContainer.addEventListener('contextmenu', flagCell);
 
-// Closes game over pop up
+// Closes game over win/lose pop up
 closeButtonEl.addEventListener('click', closePopUp);
 closeWonButtonEl.addEventListener('click', closeWonPopUp);
 
-// Opens help pop up
+// Open/close help pop up
 helpButtonEl.addEventListener('click', helpPopUp);
-
-// Closes help pop up
 helpCloseButtonEl.addEventListener('click', helpClosePopUp);
 
-// Changes difficulty and grid
+// Changes difficulty and resets grid
 difficultyEl.addEventListener('click', changeDifficulty);
 
 // Mute button
@@ -100,6 +98,12 @@ function init() {
     flags = GAME_MODE[difficulty].mines;
     flagEl.innerText = parseInt(flags);
 
+    render();
+}
+
+// Renders board
+function render() {
+
     // Resets grid if already existing
     if (gridContainer.childNodes) {
         while (gridContainer.firstChild) {
@@ -118,18 +122,14 @@ function init() {
             gridContainer.appendChild(cell);
         }
     }
-    addMinesToGrid();
-    addNumsToGrid();
-    render();
-}
-
-// Renders board
-function render() {
 
     // Displays grid of game
     gridContainer.style.gridTemplateRows = `repeat(${GAME_MODE[difficulty].rows}, 1fr`;
     gridContainer.style.gridTemplateColumns = `repeat(${GAME_MODE[difficulty].cols}, 1fr`;
     
+    // Add mines and numbered cells to grid
+    addMinesToGrid();
+    addNumsToGrid();
 }
 
 // Adds mines randomly to the grid
@@ -177,6 +177,7 @@ function checkSurroundingMines(cell) {
     return mineCount;
 }
 
+// Opens a cell
 function openCell(e) {
 
     if (e.target.dataset.status === 'flagged' ||
@@ -184,6 +185,7 @@ function openCell(e) {
 
     let datasetValue = e.target.dataset.type;
 
+    // If cell is a mine, reveal all mine cells and display game over screen
     if (datasetValue === 'mine') {
 
         mineSound.play();
@@ -203,18 +205,25 @@ function openCell(e) {
         gameOver();
         return;
 
+    // If cell is numbered, reveal cell and check if game is complete    
     } else if (CELL_NUMS.includes(parseInt(datasetValue))) {
         e.target.dataset.opened = 'number';
         e.target.dataset.status = 'opened';
 
         e.target.innerText = datasetValue;
+        let cellSize = e.target.getBoundingClientRect().width;
+        e.target.style.fontSize = `${cellSize * fontScale}px`;
+
         checkWin();
+
+    // If cell is blank, flood the 'safe' area if possible and check if game is complete
     } else if (!datasetValue) {
         flood(e.target, checkWin);
     }
     openSound.play();
 }
 
+// Flag or unflag a cell. and update flag counter
 function flagCell(e) {
 
     flagSound.play();
@@ -228,12 +237,14 @@ function flagCell(e) {
         && flagEl.innerText > 0) {
 
         e.target.innerText = '🚩'
+        let cellSize = e.target.getBoundingClientRect().width;
+        e.target.style.fontSize = `${cellSize * fontScale}px`;
         e.target.dataset.status = 'flagged';
         flagEl.innerText--;
     }  
 }
 
-// Recursively open all unmarked cells in the area of opened cell
+// Recursively open all blank cells in the area of opened cell
 function flood(cell, cb) {
 
     cell.dataset.status = 'opened';
@@ -249,6 +260,7 @@ function flood(cell, cb) {
         {row: row, col: col + 1}  // right
     ];
 
+    // Opens cells recursively with slight delay for animation effect
     setTimeout(() => {
 
         for (let direction of directions) {
@@ -259,7 +271,7 @@ function flood(cell, cb) {
             }
         }
 
-        // Open the numbered cells on the border of the opened flood cells
+        // Open all numbered cells surrounding opened flood cells
         for (let i = row - 1; i <= row + 1; i++) {
             for (let j = col - 1; j <= col + 1; j++) {
                 if (i === row && j === col) continue // Skip the target cell
@@ -274,8 +286,11 @@ function flood(cell, cb) {
                     }
 
                     neighborNumCell.innerText = neighborNumCell.dataset.type;
+                    let cellSize = neighborNumCell.getBoundingClientRect().width;
+                    neighborNumCell.style.fontSize = `${cellSize * fontScale}px`;
+
                     neighborNumCell.dataset.status = 'opened';
-                    neighborNumCell.dataset.opened = 'number'
+                    neighborNumCell.dataset.opened = 'number';
 
                 }
             }
@@ -285,6 +300,7 @@ function flood(cell, cb) {
 
 }
 
+// Starts timer for game
 function startTimer() {
     if (!timerInterval) {
         timerInterval = setInterval( () => {
@@ -295,6 +311,7 @@ function startTimer() {
     }
 }
 
+// Displays game over message
 function gameOver() {
 
     // Prevents cells from being clicked after game is finished
