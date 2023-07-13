@@ -5,8 +5,7 @@ html {
 
 body {
     height: 100vh;
-    /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
-    background: linear-gradient(-45deg, #b72df7, #8c2afc, #23a6d5, #23d5ab);
+    background: linear-gradient(-45deg, #f72dcb, #8c2afc, #23a6d5, #23d5ab);
     background-size: 400%;
 	animation: gradient 30s ease infinite;
     display: flex;
@@ -186,18 +185,18 @@ div[data-opened="number"] {
 }
 
 .button:after {
-  background-clip: padding-box;
-  background-color: #1CB0F6;
-  border: solid transparent;
-  border-radius: 16px;
-  border-width: 0 0 4px;
-  bottom: -4px;
-  content: "";
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: -1;
+    background-clip: padding-box;
+    background-color: #1CB0F6;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    bottom: -4px;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
 }
 
 .button:hover {
